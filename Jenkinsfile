@@ -126,5 +126,11 @@ pipeline {
                 }
             }
         }
+        stage('Initialize Nginx Ingress Controller') {
+            steps {
+                sleep time: 20, unit: 'SECONDS'
+                echo 'Nginx Ingress Controller initialization complete.'
+            }
+        }
     }
 }
