@@ -61,5 +61,21 @@ pipeline {
                 }
             }
         }
+        stage('Build') {
+            steps {
+                script {
+                    //buildJar functions is avaliable in the jenkins-shared-library
+                    buildJar()
+                }
+            }
+        }
+        stage('Package') {
+            steps {
+                script {
+                    //packageApp functions is avaliable in the jenkins-shared-library
+                    packageApp()
+                }
+            }
+        }
     }
 }
