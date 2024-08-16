@@ -132,5 +132,22 @@ pipeline {
                 echo 'Nginx Ingress Controller initialization complete.'
             }
         }
+        stage('Deploy Ingress Resource') {
+            steps {
+                script {
+                    sh '''
+                    kubectl apply -f ./kubernetes/ingress.yaml --namespace ${KUBE_NAMESPACE}
+                    '''
+                }
+            }
+        }
+        stage('Fetch Load Balancer DNS') {
+            steps {
+                sleep time: 10, unit: 'SECONDS'
+                echo 'Load Balancer initialization complete.'
+            }
+        }
+      }
+
     }
 }
