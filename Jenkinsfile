@@ -5,7 +5,7 @@ pipeline {
     environment{
         AWS_ACCESS_KEY_ID = credentials('jenkins-aws-access-key-id')
         AWS_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key-id')
-        KUBE_NAMESPACE = 'development'		
+        KUBE_NAMESPACE = 'production'		
         INGRESS_NAMESPACE = 'ingress-nginx'	
     }
     tools{
@@ -89,11 +89,11 @@ pipeline {
                 }
             }
         }
-        stage('Deploying App to Development environment on EKS Cluster ') {
+        stage('Deploying App to production environment on EKS Cluster ') {
             steps {
                 script{
-                    // Create the development Namespace if it doesn't Exist 
-                    // || true used not stop the pipeline if the Development namespace is already Exist
+                    // Create the production Namespace if it doesn't Exist 
+                    // || true used not stop the pipeline if the production namespace is already Exist
 
                     sh 'kubectl create namespace ${KUBE_NAMESPACE} || true'     
 
@@ -106,7 +106,7 @@ pipeline {
                                 --namespace=${KUBE_NAMESPACE} || true"
                         }
                     // deploying the spring boot application to EKS Cluster
-                    echo "deploying to development Environment EKS Cluster "
+                    echo "deploying to production Environment EKS Cluster "
                     sh 'kubectl apply -f ./kubernetes/deployment.yaml -n ${KUBE_NAMESPACE}'
                     sh 'kubectl apply -f ./kubernetes/service.yaml -n ${KUBE_NAMESPACE}'    
                 }
@@ -116,7 +116,7 @@ pipeline {
             steps {
                 script {
 
-                    //|| true used not stop the pipeline if the development namespace is already Exist
+                    //|| true used not stop the pipeline if the production namespace is already Exist
                     sh '''
                     kubectl create namespace ${INGRESS_NAMESPACE} || true
                     helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
