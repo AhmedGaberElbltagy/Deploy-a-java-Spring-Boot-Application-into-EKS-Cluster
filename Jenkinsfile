@@ -25,14 +25,24 @@ pipeline {
          stage('Lint') {
             steps {
                 script {
-                    // Run the gradle check task, which includes linting
-                    sh './gradlew checkstyleMain checkstyleTest --warning-mode all'
+                  // Run the gradle check task, which includes linting
+                    //LintApp functions is avaliable in the jenkins-shared-library
+                    
+                    lintApp()
                 }
             }
             post {
                 always {
                     // Archive the linting report if any
                     archiveArtifacts artifacts: '**/build/reports/**', allowEmptyArchive: true
+                }
+            }
+        }
+        stage('Test') {
+            steps {
+                script {
+                    //testApp functions is avaliable in the jenkins-shared-library
+                    testApp()
                 }
             }
         }
