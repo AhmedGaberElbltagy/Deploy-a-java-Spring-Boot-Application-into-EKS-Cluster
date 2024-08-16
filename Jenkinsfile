@@ -46,5 +46,20 @@ pipeline {
                 }
             }
         }
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('sonarqube') {
+                    sh './gradlew sonar '
+                }
+            }
+        }
+        stage('Quality Gate') {
+            steps {
+                // Wait for SonarQube quality gate result
+                timeout(time: 10, unit: 'HOURS') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
     }
 }
