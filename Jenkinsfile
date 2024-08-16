@@ -148,6 +148,14 @@ pipeline {
             }
         }
       }
-
-    }
+      stage('Print DNS of Load Balancer') {
+            steps {
+                script {
+                    def ingressName = "spring-boot-ingress"
+                    def namespace = "production"
+                    def loadBalancerDNS = sh(script: "kubectl get ing ${ingressName} --namespace ${namespace} -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'", returnStdout: true).trim()
+                    echo "Load Balancer DNS: ${loadBalancerDNS}"
+                }
+            }
+      }
 }
