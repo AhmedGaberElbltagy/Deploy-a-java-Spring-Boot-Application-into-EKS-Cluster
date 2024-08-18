@@ -99,7 +99,7 @@ pipeline {
 
                     // Create k8s secret to allow deployment resource to access dockerhub and pull the image 
                     withCredentials([usernamePassword(credentialsId: 'DockerHub_Credientials', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
-                        
+
                             sh './scripts/CreateDockerHubSecret.sh'
                         }
                     // deploying the spring boot application to EKS Cluster
@@ -113,7 +113,6 @@ pipeline {
 
                     //|| true used not stop the pipeline if the development namespace is already Exist
                     sh '''
-                    kubectl create namespace ${INGRESS_NAMESPACE} || true
                     helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
                     helm repo update
                     helm install nginx-ingress ingress-nginx/ingress-nginx --namespace ${INGRESS_NAMESPACE} || true
