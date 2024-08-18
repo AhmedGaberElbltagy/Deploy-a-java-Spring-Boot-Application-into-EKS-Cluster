@@ -89,26 +89,21 @@ pipeline {
                 }
             }
         }
-        stage('Deploying App to production environment on EKS Cluster ') {
+        stage('Deploying App to Production environment on EKS Cluster ') {
             steps {
                 script{
-                    // Create the production Namespace if it doesn't Exist 
-                    // || true used not stop the pipeline if the production namespace is already Exist
 
+                    // Create the Production Namespace if it doesn't Exist 
+            
                     sh 'kubectl create namespace ${KUBE_NAMESPACE} || true'     
 
                     // Create k8s secret to allow deployment resource to access dockerhub and pull the image 
                     withCredentials([usernamePassword(credentialsId: 'DockerHub_Credientials', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
-                            sh "kubectl create secret docker-registry my-registry-key \
-                                --docker-server=docker.io \
-                                --docker-username=$USER \
-                                --docker-password=$PASS \
-                                --namespace=${KUBE_NAMESPACE} || true"
+
+                            sh './scripts/CreateDockerHubSecret.sh'
                         }
                     // deploying the spring boot application to EKS Cluster
-                    echo "deploying to production Environment EKS Cluster "
-                    sh 'kubectl apply -f ./kubernetes/deployment.yaml -n ${KUBE_NAMESPACE}'
-                    sh 'kubectl apply -f ./kubernetes/service.yaml -n ${KUBE_NAMESPACE}'    
+                            sh './scripts/DeploytoEKS.sh'
                 }
             }
         }
