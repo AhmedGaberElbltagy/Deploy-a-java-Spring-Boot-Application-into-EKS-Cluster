@@ -113,6 +113,7 @@ pipeline {
 
                     //|| true used not stop the pipeline if the development namespace is already Exist
                     sh '''
+                    kubectl create namespace ${INGRESS_NAMESPACE} || true
                     helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
                     helm repo update
                     helm install nginx-ingress ingress-nginx/ingress-nginx --namespace ${INGRESS_NAMESPACE} || true
