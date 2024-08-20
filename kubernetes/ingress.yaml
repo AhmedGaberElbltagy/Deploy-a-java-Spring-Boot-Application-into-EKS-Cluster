@@ -5,27 +5,21 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /actuator/health
 spec:
-  ingressClassName: nginx
   rules:
-    - host: *
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: spring-boot-service
-                port:
-                  number: 80
-          - path: /live
-            pathType: Prefix
-            backend:
-              service:
-                name: spring-boot-live-service
-                port: 
-                  number: 8080
-
-
-
-
-
+  - host: *
+    http:
+      paths:
+      - path: /live
+        pathType: Prefix
+        backend:
+          service:
+            name: spring-boot-service
+            port:
+              number: 80
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: spring-boot-service
+            port:
+              number: 80
