@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
   name: spring-boot-ingress
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/rewrite-target: /actuator/health
 spec:
   ingressClassName: nginx
   rules:

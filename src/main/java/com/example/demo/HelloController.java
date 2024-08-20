@@ -10,5 +10,10 @@ public class HelloController {
     public String sayHello() {
         return "index.html";
     }
+    @GetMapping("/live")
+    public String liveCheck() {
+        // This is a simple response. You can customize it as needed.
+        return "Application is live";
+    }
 
 }
