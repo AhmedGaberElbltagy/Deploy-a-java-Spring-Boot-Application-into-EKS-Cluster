@@ -82,7 +82,7 @@ pipeline {
                 script {
                      //buildImage , pushImage functions is avaliable in the jenkins-shared-library,
                      // and they takes a varaiable 'image name'
-                     buildImage 'my-spring-boot-app'
+                     buildImage 'my-spring-boot-app:v3'
                      dockerLogin()
                      pushImage 'my-spring-boot-app:v3'
 
@@ -99,10 +99,14 @@ pipeline {
 
                     // Create k8s secret to allow deployment resource to access dockerhub and pull the image 
                     withCredentials([usernamePassword(credentialsId: 'DockerHub_Credientials', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
+                            
+                            sh 'chmod +x ./scripts/CreateDockerHubSecret.sh'
 
                             sh './scripts/CreateDockerHubSecret.sh'
                         }
                     // deploying the spring boot application to EKS Cluster
+                            sh 'chmod +x ./scripts/DeploytoEKS.sh'
+                            
                             sh './scripts/DeploytoEKS.sh'
                 }
             }
