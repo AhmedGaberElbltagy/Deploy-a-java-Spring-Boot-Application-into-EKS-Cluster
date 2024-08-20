@@ -142,7 +142,6 @@ pipeline {
                 echo 'Load Balancer initialization complete.'
             }
         }
-      }
       stage('Print DNS of Load Balancer') {
             steps {
                 script {
@@ -153,4 +152,5 @@ pipeline {
                 }
             }
       }
+    }
 }
